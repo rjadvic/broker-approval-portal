@@ -1,0 +1,143 @@
+<div class="oj-hybrid-padding">
+  <div>
+    <h5>Contacts</h5>
+    <hr />
+
+    <oj-bind-if test="[[contact.contacts().length]]">
+      <div class="oj-flex">
+        <oj-button id="btnAdd" class="oj-flex-bar-end" chroming='callToAction' on-oj-action="[[contact.add]]">
+          <span slot="startIcon">
+            <span class="oj-ux-ico-plus btn-icon"></span>
+          </span>
+          Add Contact
+        </oj-button>
+      </div>
+    </oj-bind-if>
+
+    <oj-table id='table' data="[[contact.contactsProvider]]" selection-mode='{"row": "single"}'
+      selected.row='{{contact.selectedContact}}' dnd='{"reorder": {"columns": "enabled"}}'
+      scroll-policy='loadMoreOnScroll' scroll-policy-options='{"fetchSize": 10}' columns='[[contact.columns]]'
+      style='width: 100%;height: 600px;'>
+
+      <template slot="fullNameTemplate" data-oj-as="cell">
+        <oj-bind-text value="[[[cell.row.firstname, cell.row.lastname].join(' ')]]">
+        </oj-bind-text>
+      </template>
+
+
+      <template slot="jobTitleTemplate" data-oj-as="cell">
+        <oj-select-single readonly data="[[LOV.providers.jobTitle]]" value="[[cell.data]]"
+          item-text="[[LOV.text.jobTitle]]">
+        </oj-select-single>
+      </template>
+
+
+      <template slot="primaryTemplate" data-oj-as="cell">
+        <oj-bind-text value="[[cell.row.isprimarycontact ? 'Yes': 'No']]"></oj-bind-text>
+      </template>
+
+      <template slot="actionTemplate" data-oj-as="cell">
+        <div>
+          <oj-button disabled="[[disabled]]" chroming='borderless' on-oj-action="[[contact.edit]]">
+            <span title="Edit Contact" role="img" class="oj-ux-ico-edit oj-ux-icon-size-5x">
+          </oj-button>
+          <oj-bind-if test="[[!cell.row.isportaluser]]">
+            <oj-button disabled="[[disabled]]" chroming='borderless' on-oj-action="[[contact.delete]]">
+              <span title="Delete Contact" role="img" class="oj-ux-ico-trash oj-ux-icon-size-5x"></span>
+            </oj-button>
+          </oj-bind-if>
+        </div>
+      </template>
+
+      <template slot="noData">
+        <div class="oj-flex oj-sm-align-items-center" style="height:100%">
+          <div class="oj-flex oj-sm-align-items-center oj-sm-flex-direction-column" style="width:100%">
+            <span class="oj-sm-padding-2x oj-typography-body-xl">No Contacts to display</span>
+
+            <oj-button id="btnAdd" chroming='callToAction' on-oj-action="[[contact.add]]">
+              <span slot="startIcon">
+                <span class="oj-ux-ico-plus btn-icon"></span>
+              </span>
+              Add Contact
+            </oj-button>
+
+          </div>
+        </div>
+      </template>
+
+
+    </oj-table>
+    
+  </div>
+</div>
+
+<oj-dialog drag-affordance="none" modality="modal" style="width:800px;height:auto;" initial-visibility="hide"
+  position='[[{my: "center", at: "center", collision: "fit"}]]' cancel-behavior="icon" id="ContactDialog"
+  dialog-title="Contact Information">
+  <div slot="body">
+    <!-- <oj-defer> -->
+    <oj-validation-group id="contact_tracker">
+      <hr />
+      <oj-form-layout direction="column" user-assistance-density='compact' max-rows="5" max-columns="2"
+        class="oj-formlayout-full-width">
+
+        <div>
+          <oj-input-text style="margin: 0 0 12px 0;" required="[[contact.fields.contacttype()=='1']]"
+            value="{{contact.fields.nmlsnumber}}" label-hint="NMLS Number" validators="[[[validator.number(1)]]]">
+            <!-- <oj-button slot="end" display="icons" on-oj-action="[[contact.verifyNMLS]]" chroming="borderless">
+            Verify NMLS
+            <span slot="endIcon" class="oj-ux-ico-arrow-right"></span>
+          </oj-button> -->
+          </oj-input-text>
+
+          <oj-input-text style="margin: 0 0 12px 0;" required value="{{contact.fields.firstname}}"
+            label-hint="First Name">
+          </oj-input-text>
+          <oj-input-text style="margin: 0 0 12px 0;" value="{{contact.fields.middlename}}" label-hint="Middle Name">
+          </oj-input-text>
+          <oj-input-text style="margin: 0 0 12px 0;" required value="{{contact.fields.lastname}}"
+            label-hint="Last Name">
+          </oj-input-text>
+
+          <oj-checkboxset value="{{contact.fields.isprimarycontact}}">
+            <oj-option value="true">Primary Contact</oj-option>
+          </oj-checkboxset>
+
+        </div>
+        <div>
+          <oj-input-text value="{{contact.fields.emailaddress}}" label-hint="Email" validators="[[[validator.email]]]"
+            disabled="[[contact.fields.isportaluser()]]">
+          </oj-input-text>
+          <oj-bind-if test="[[contact.fields.isportaluser()]]">
+            <span class="disabled-text">You cannot change email address of a portal user</span>
+          </oj-bind-if>
+        </div>
+
+        <oj-input-text value="{{contact.fields.telephone}}" label-hint="Telephone" length.max="15">
+        </oj-input-text>
+
+
+        <oj-select-single required label-hint="Job Title" data="[[LOV.providers.jobTitle]]"
+          value="{{contact.fields.contacttype}}" item-text="[[LOV.text.jobTitle]]">
+        </oj-select-single>
+
+        <oj-bind-if test="[[contact.fields.contacttype()=='3']]">
+          <oj-input-text value="{{contact.fields.jobtitleother}}" required="[[contact.fields.contacttype()=='3']]"
+            label-hint="Job Title Other">
+          </oj-input-text>
+        </oj-bind-if>
+
+      </oj-form-layout>
+
+    </oj-validation-group>
+    <!-- </oj-defer> -->
+  </div>
+  <div slot="footer">
+    <oj-button on-oj-action="[[contact.saveContact]]" chroming='callToAction'>
+      <span slot="startIcon">
+        <span class="oj-ux-ico-save btn-icon"></span>
+      </span>
+      Save
+    </oj-button>
+  </div>
+</oj-dialog>

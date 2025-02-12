@@ -1,0 +1,118 @@
+<div class="oj-hybrid-padding">
+
+  <div>
+    <h5>NMLS Information</h5>
+    <hr />
+    <oj-validation-group id="NMLS">
+      <oj-form-layout user-assistance-density="compact" max-columns="2" class="oj-formlayout-full-width">
+
+        <div>
+          <oj-checkboxset disabled="[[nmlsverified()]]" id="isbranchoffice" labelled-by="Branch Office"
+            value="{{company.fields.isbranchoffice}}">
+            <oj-option value="true">This is a Branch Office</oj-option>
+          </oj-checkboxset>
+
+          <oj-input-text disabled="[[nmlsverified()]]" readonly="[[disabled]]"
+            required="[[company.fields.brokerType()=='1']]"
+            validators="[[[validator.requiredText(company.isBranch()?'Enter Main Office NMLS Number': 'Enter NMLS Number')]]]"
+            value="{{company.fields.nmlsnumber}}"
+            :label-hint="[[company.isBranch()?'Main Office NMLS Number': 'NMLS Number']]" tabindex="1">
+            <oj-button tabindex="-1" slot="end" display="icons" disabled="[[nmlsverified()]]"
+              on-oj-action="[[company.verifyNMLS]]" chroming="borderless">
+              Verify NMLS
+              <span slot="endIcon" class="oj-ux-ico-arrow-right"></span>
+            </oj-button>
+          </oj-input-text>
+
+        </div>
+
+        <oj-radioset required label-hint="Broker Type" class="oj-choice-direction-column bold-label" id="brokerType"
+          options="{{LOV.providers.brokerType}}" value="{{company.fields.brokerType}}" tabindex="2">
+        </oj-radioset>
+
+      </oj-form-layout>
+    </oj-validation-group>
+
+    <h5>Company Information</h5>
+    <hr />
+    <oj-validation-group id="company">
+
+      <oj-form-layout user-assistance-density='compact' direction="row" max-columns="[[2]]"
+        class="oj-formlayout-full-width">
+
+        <oj-input-text disabled="[[disabled]]" required value="{{company.fields.name}}" label-hint="Name" tabindex="3">
+        </oj-input-text>
+
+        <oj-input-text disabled="[[disabled]]" required value="{{company.fields.addressline1}}"
+          label-hint="Address Line 1" tabindex="7"></oj-input-text>
+
+        <oj-input-text disabled="[[disabled]]" required value="{{company.fields.phone}}" label-hint="Phone"
+          length.max="15" tabindex="4"></oj-input-text>
+
+        <oj-input-text disabled="[[disabled]]" value="{{company.fields.addressline2}}" label-hint="Address Line 2"
+          tabindex="9"></oj-input-text>
+
+        <oj-input-text disabled="[[disabled]]" value="{{company.fields.fax}}" label-hint="Fax" length.max="12"
+          tabindex="5"></oj-input-text>
+
+        <oj-input-text required disabled="[[disabled]]" value="{{company.fields.city}}" label-hint="City" tabindex="9">
+        </oj-input-text>
+
+        <oj-input-text disabled="[[disabled]]" value="{{company.fields.websiteurl}}" label-hint="Website" tabindex="6">
+        </oj-input-text>
+
+        <oj-select-single required disabled="[[disabled]]" label-hint="State" data="[[LOV.providers.state]]"
+          value="{{company.fields.state}}" item-text="[[LOV.text.state]]" tabindex="10"></oj-select-single>
+
+        <div style="display: none;">
+          EMPTY SPACE
+        </div>
+
+        <oj-input-text required disabled="[[disabled]]" value="{{company.fields.zipcode}}" label-hint="Zip Code"
+          tabindex="11"></oj-input-text>
+
+      </oj-form-layout>
+
+
+    </oj-validation-group>
+
+    <h5>Other Information</h5>
+    <hr />
+    <oj-validation-group id='account-executive'>
+      <oj-form-layout user-assistance-density='compact' max-columns="2" label-edge="start">
+
+        <oj-select-single tabindex="12" required disabled="[[disabled]]" label-hint="ACC Acount Executive: "
+          data="[[LOV.providers.accountExecutive]]" value="{{company.fields.accountexecutiveacc}}"
+          item-text="[[LOV.text.accountExecutive]]">
+        </oj-select-single>
+
+      </oj-form-layout>
+    </oj-validation-group>
+
+    <oj-form-layout user-assistance-density='compact' class="oj-formlayout-full-width">
+
+      <oj-text-area tabindex="13" disabled="[[disabled]]" label-hint="Comments" rows="5"
+        value="{{company.fields.comments}}">
+      </oj-text-area>
+
+    </oj-form-layout>
+
+    <div class="oj-flex oj-sm-flex-items-initial oj-sm-justify-content-flex-end">
+      <div class="oj-flex-item oj-sm-padding-2x-horizontal">
+        <oj-button disabled="[[disabled]]" chroming='callToAction' on-oj-action="[[company.save]]">
+          <span slot="startIcon">
+            <span class="oj-ux-ico-save btn-icon"></span>
+          </span>
+          SAVE
+        </oj-button>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+</div>

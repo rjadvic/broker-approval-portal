@@ -1,0 +1,106 @@
+<!--
+ Copyright (c) 2014, 2020, Oracle and/or its affiliates.
+ Licensed under The Universal Permissive License (UPL), Version 1.0
+ as shown at https://oss.oracle.com/licenses/upl/
+ -->
+<div class="" style="height: 100%;"> 
+
+  <div class="oj-flex oj-flex-items-pad" style="height: 100%;">
+    <!-- 1 -->
+    <div class="oj-lg-8 oj-mg-6 oj-flex-item oj-sm-only-hide oj-md-only-hide" style="background: url(https://accmortgage.blob.core.windows.net/acc/new-login-image-acc-broker.png);background-size: cover;background-position: center;">
+<!--       <img src="css/images/loginSplash.png" style="width: 100%; margin: -10px; margin-left: -13px" /> -->
+     <!--<img src="https://accmortgage.blob.core.windows.net/acc/new-login-image-acc-broker.png" style="width: 100%; margin: -10px; margin-left: -13px" />-->
+    </div>
+
+    <!-- 2 -->
+    <div class="oj-sm-align-self-center oj-lg-4 oj-md-12 oj-flex-item oj-sm-padding-4x-horizontal">
+      <div class="text-center">
+        <!-- <img class="oj-sm-only-hide" src="css/images/ACC_Mortgage_Logo.png" width="200px" /> -->
+      </div>
+      <oj-validation-group id="tracker">
+
+        <oj-form-layout user-assistance-density='compact' class="oj-helper-margin-auto oj-formlayout-full-width"
+          max-columns='1'>
+          <h4 class="oj-sm-margin-0-vertical">Create Account</h4>
+
+          Contact Info
+          <hr>
+          <oj-form-layout columns="2">
+            <oj-input-text style="min-width: 15em;" id="contactnmlsnumber" label-hint="My NMLS Number"
+              required="[[!form.nocontactnmls().includes('Y')]]" value="{{form.contactnmlsnumber}}"
+              disabled="[[form.nocontactnmls().includes('Y')]]" on-value-changed="[[verifyContactNMLS]]" validators="[[[validators.number(1)]]]">
+              <oj-button tabindex="-1" slot="end" display="icons" on-oj-action="[[verifyContactNMLS]]"
+                chroming="borderless">
+                Verify NMLS
+                <span slot="endIcon" class="oj-ux-ico-arrow-right"></span>
+              </oj-button>
+            </oj-input-text>
+            <oj-checkboxset class="oj-sm-margin-2x-vertical" id="noncontactnmls" labelled-by="I do not have"
+              value="{{form.nocontactnmls}}">
+              <oj-option value="Y">I don't have one</oj-option>
+            </oj-checkboxset>
+
+            <oj-input-text style="min-width: 15em;" id="fname" label-hint="First Name" value="{{form.firstName}}"
+              required="[[form.nocontactnmls().includes('Y')]]" readonly="[[!form.nocontactnmls().includes('Y')]]">
+            </oj-input-text>
+            <oj-input-text style="min-width: 15em;" id="lname" label-hint="Last Name" value="{{form.lastName}}"
+              required="[[form.nocontactnmls().includes('Y')]]" readonly="[[!form.nocontactnmls().includes('Y')]]">
+            </oj-input-text>
+          </oj-form-layout>
+
+          Company Info
+          <hr>
+
+          <oj-form-layout columns="2">
+
+            <oj-input-text style="min-width: 15em;" id="companynmlsnumber" label-hint="Company NMLS Number"
+              required="[[!form.nocompanynmls().includes('Y')]]" value="{{form.companynmlsnumber}}"
+              disabled="[[form.nocompanynmls().includes('Y')]]" on-value-changed="[[verifyCompanyNMLS]]" validators="[[[validators.number(1)]]]">
+              <oj-button tabindex="-1" slot="end" display="icons" on-oj-action="[[verifyCompanyNMLS]]"
+                chroming="borderless">
+                Verify NMLS
+                <span slot="endIcon" class="oj-ux-ico-arrow-right"></span>
+              </oj-button>
+            </oj-input-text>
+
+            <oj-checkboxset class="oj-sm-margin-2x-vertical" id="nocompanynmls" labelled-by="I Dont have one" value="{{form.nocompanynmls}}">
+              <oj-option value="Y">I don't have one</oj-option>
+            </oj-checkboxset>
+
+          </oj-form-layout>
+
+          <oj-input-text style="min-width: 15em;" id="companynmlsname" value="{{form.companyname}}"
+            label-hint="Company Name" required="[[form.nocompanynmls().includes('Y')]]"
+            readonly="[[!form.nocompanynmls().includes('Y')]]">
+          </oj-input-text>
+
+          Email & Password
+          <hr>
+          <oj-input-text style="min-width: 15em;" id="email" label-hint="Email" value="{{form.email}}" required
+            validators="[[[validators.email]]]">
+          </oj-input-text>
+          <oj-input-password style="min-width: 15em;" id="pass" type="password" value="{{form.password}}" required
+            validators="[[[validators.required(8)]]]" label-hint="Password" mask-icon="visible">
+          </oj-input-password>
+          <oj-input-password style="min-width: 15em;" id="confirmPassword" type="password" value="{{confirmPassword}}"
+            required validators="[[[equalToPassword]]]" label-hint="Confirm Password" mask-icon="visible">
+          </oj-input-password>
+
+
+          <oj-checkboxset id="looksgood" labelled-by="All looks good" value="{{form.agreed}}">
+            <oj-option value="Y">All looks good</oj-option>
+          </oj-checkboxset>
+
+
+          <oj-button style="min-width: 100%" chroming="callToAction" on-oj-action="[[register]]"
+            disabled="[[!form.agreed().includes('Y')]]">Create
+          </oj-button>
+
+
+        </oj-form-layout>
+
+      </oj-validation-group>
+    </div>
+  </div>
+
+</div>

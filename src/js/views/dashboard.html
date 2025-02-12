@@ -1,0 +1,443 @@
+<div>
+  <div id="train-container" class="oj-sm-margin-2x">
+
+    <oj-bind-if test="[[!applicationSubmitted()]]">
+      <div class="oj-flex-bar">
+        <div class="oj-flex-bar-start">
+
+          <oj-button chroming="borderless" display="icons" id="PreviousStep"
+            :class="[[{'train-step-button': true,'back': Screen.isLargeScreen() }]]" on-oj-action="[[previousStep]]"
+            disabled="[[selectedStepValue() == 'INFORMATION']]">
+            <span slot='startIcon' class="oj-ux-ico-chevron-left"></span>
+          </oj-button>
+
+        </div>
+        <div class="oj-flex-bar-middle oj-flex">
+          <oj-train id="train" class="oj-train-stretch disabled "  on-selected-step-changed="[[updateStepForm]]"
+            on-oj-before-select="[[validate]]" selected-step="{{selectedStepValue}}" steps="[[stepArray]]">
+          </oj-train>
+        </div>
+        <div class="oj-flex-bar-end">
+
+          <oj-button chroming="borderless" display="icons" id="NextStep"
+            :class="[[{'train-step-button': true,'next': Screen.isLargeScreen() }]]" on-oj-action="[[nextStep]]"
+            disabled="[[selectedStepValue() == 'DOCUMENTS']]">
+            <span slot='startIcon' class="oj-ux-ico-chevron-right"></span>
+          </oj-button>
+
+        </div>
+      </div>
+    </oj-bind-if>
+
+    <oj-validation-group id="tracker" role="group" aria-labelledby="grouplabelid">
+
+      <!-- BEGIN STEP ONE: INFORMATION -->
+      <oj-bind-if test="[[selectedStepValue() === 'INFORMATION']]">
+        <div data-bind="html: InfoPage">
+        </div>
+
+        <!-- <oj-button disabled="[[disabled]]" chroming='callToAction' on-oj-action="[[nextStep]]" style="float: right;">
+          NEXT
+          <span slot="endIcon">
+            <span slot='startIcon' class="oj-ux-ico-chevron-right oj-ux-icon-size-5x"></span>
+          </span>
+        </oj-button> -->
+
+      </oj-bind-if>
+      <!-- END STEP ONE: INFORMATION -->
+
+
+
+
+      <!-- BEGIN STEP TWO: COMPANY_INFO -->
+      <oj-bind-if test="[[selectedStepValue() === 'COMPANY_INFO']]">
+
+        <h5>NMLS Information</h5>
+        <hr />
+        <oj-form-layout user-assistance-density="compact" max-columns="2" class="oj-formlayout-full-width">
+
+          <div>
+            <oj-checkboxset disabled="[[nmlsverified()]]" id="isbranchoffice" labelled-by="Branch Office"
+              value="{{company.fields.isbranchoffice}}">
+              <oj-option value="true">This is a Branch Office</oj-option>
+            </oj-checkboxset>
+
+            <oj-input-text tabindex="1" disabled="[[disabled]]" readonly="[[nmlsverified()]]"
+              required="[[company.fields.brokerType()=='1']]"
+              validators="[[[validator.requiredText(company.isBranch()?'Enter Main Office NMLS Number': 'Enter NMLS Number')]]]"
+              value="{{company.fields.nmlsnumber}}"
+              :label-hint="[[company.isBranch()?'Main Office NMLS Number': 'NMLS Number']]">
+              <oj-button tabindex="-1" slot="end" display="icons" disabled="[[nmlsverified()]]"
+                on-oj-action="[[company.verifyNMLS]]" chroming="borderless">
+                Verify NMLS
+                <span slot="endIcon" class="oj-ux-ico-arrow-right"></span>
+              </oj-button>
+            </oj-input-text>
+
+          </div>
+
+          <oj-radioset tabindex="2" required label-hint="Broker Type" class="oj-choice-direction-column bold-label"
+            id="brokerType" options="{{LOV.providers.brokerType}}" value="{{company.fields.brokerType}}">
+          </oj-radioset>
+
+        </oj-form-layout>
+
+        <h5>Company Information</h5>
+        <hr />
+        <oj-form-layout user-assistance-density='compact' direction="row" max-columns="[[Screen.columns]]"
+          class="oj-formlayout-full-width">
+
+          <oj-input-text disabled="[[disabled]]" required value="{{company.fields.name}}" label-hint="Name" tabindex="3"></oj-input-text>
+  
+          <oj-input-text disabled="[[disabled]]" required value="{{company.fields.addressline1}}"
+          label-hint="Address Line 1" tabindex="7"></oj-input-text>
+
+          <oj-input-text disabled="[[disabled]]" required value="{{company.fields.phone}}" label-hint="Phone"
+            length.max="15" tabindex="4"></oj-input-text>
+            
+          <oj-input-text disabled="[[disabled]]" value="{{company.fields.addressline2}}" label-hint="Address Line 2"
+          tabindex="9"></oj-input-text>
+
+          <oj-input-text disabled="[[disabled]]" value="{{company.fields.fax}}" label-hint="Fax" length.max="12"
+            tabindex="5"></oj-input-text>
+
+          <oj-input-text required disabled="[[disabled]]" value="{{company.fields.city}}" label-hint="City"
+            tabindex="9"></oj-input-text>
+
+          <oj-input-text disabled="[[disabled]]" value="{{company.fields.websiteurl}}" label-hint="Website"
+            tabindex="6"></oj-input-text>
+
+          <oj-select-single required disabled="[[disabled]]" label-hint="State" data="[[LOV.providers.state]]"
+            value="{{company.fields.state}}" item-text="[[LOV.text.state]]" tabindex="10"></oj-select-single>
+            
+          <div style="display: none;">
+            EMPTY SPACE
+          </div>
+
+          <oj-input-text required disabled="[[disabled]]" value="{{company.fields.zipcode}}" label-hint="Zip Code"
+          tabindex="11"></oj-input-text>
+
+        </oj-form-layout>
+
+        <h5>Other Information</h5>
+        <hr />
+        <oj-form-layout user-assistance-density='compact' max-columns="2">
+          <oj-validation-group id='account-executive'>
+
+            
+            <oj-select-single tabindex="12" required disabled="[[disabled]]" label-hint="ACC Acount Executive: "
+              data="[[LOV.providers.accountExecutive]]" value="{{company.fields.accountexecutiveacc}}"
+              item-text="[[LOV.text.accountExecutive]]" validators="[[[validator.requiredText]]]">
+            </oj-select-single>
+
+          </oj-validation-group>
+        </oj-form-layout>
+
+        <oj-form-layout user-assistance-density='compact' class="oj-formlayout-full-width">
+
+          <oj-text-area tabindex="13" disabled="[[disabled]]" label-hint="Comments" rows="5"
+            value="{{company.fields.comments}}">
+          </oj-text-area>
+
+        </oj-form-layout>
+
+        <div class="oj-flex oj-sm-flex-items-initial oj-sm-justify-content-flex-end">
+          <!-- <div class="oj-flex-item oj-sm-padding-2x-horizontal">
+            <oj-button disabled="[[disabled]]" chroming='callToAction' on-oj-action="[[nextStep]]">
+              <span slot="startIcon">
+                <span class="oj-ux-ico-save btn-icon"></span>
+              </span>
+              SAVE
+            </oj-button>
+          </div> -->
+        </div>
+      </oj-bind-if>
+      <!-- END STEP TWO: COMPANY_INFO -->
+
+
+
+
+      <!-- BEGIN STEP THREE: CONTACTS -->
+      <oj-bind-if test="[[selectedStepValue() === 'CONTACTS']]">
+
+        <h5>Contacts</h5>
+        <hr />
+
+        <oj-bind-if test="[[contact.contacts().length]]">
+          <div class="oj-flex">
+            <oj-button id="btnAdd" class="oj-flex-bar-end" chroming='callToAction' on-oj-action="[[contact.add]]">
+              <span slot="startIcon">
+                <span class="oj-ux-ico-plus btn-icon"></span>
+              </span>
+              ADD CONTACT
+            </oj-button>
+          </div>
+        </oj-bind-if>
+
+        <oj-table id='table' data="[[contact.contactsProvider]]" selection-mode='{"row": "single"}'
+          selected.row='{{contact.selectedContact}}' dnd='{"reorder": {"columns": "enabled"}}'
+          scroll-policy='loadMoreOnScroll' scroll-policy-options='{"fetchSize": 10}' columns='[[contact.columns]]'
+          style='width: 100%;height: 450px;'>
+
+          <template slot="fullNameTemplate" data-oj-as="cell">
+            <oj-bind-text value="[[[cell.row.firstname, cell.row.lastname].join(' ')]]">
+            </oj-bind-text>
+          </template>
+
+
+          <template slot="jobTitleTemplate" data-oj-as="cell">
+            <oj-select-single aria-label="Job Title" readonly data="[[LOV.providers.jobTitle]]" value="[[cell.data]]"
+              item-text="[[LOV.text.jobTitle]]">
+            </oj-select-single>
+          </template>
+
+
+          <template slot="primaryTemplate" data-oj-as="cell">
+            <oj-bind-text value="[[cell.row.isprimarycontact ? 'Yes': 'No']]"></oj-bind-text>
+          </template>
+
+          <template slot="actionTemplate" data-oj-as="cell">
+            <div>
+              <oj-button disabled="[[disabled]]" chroming='borderless' on-oj-action="[[contact.edit]]">
+                <span title="Edit Contact" role="img" class="oj-ux-ico-edit oj-ux-icon-size-5x">
+              </oj-button>
+              <oj-bind-if test="[[!cell.row.isportaluser]]">
+                <oj-button disabled="[[disabled]]" chroming='borderless' on-oj-action="[[contact.delete]]">
+                  <span title="Delete Contact" role="img" class="oj-ux-ico-trash oj-ux-icon-size-5x"></span>
+                </oj-button>
+              </oj-bind-if>
+            </div>
+          </template>
+
+          <template slot="noData">
+            <div class="oj-flex oj-sm-align-items-center" style="height:100%">
+              <div class="oj-flex oj-sm-align-items-center oj-sm-flex-direction-column" style="width:100%">
+                <span class="oj-sm-padding-2x oj-typography-body-xl">No Contacts to display</span>
+
+                <oj-button id="btnAdd" chroming='callToAction' on-oj-action="[[contact.add]]">
+                  <span slot="startIcon">
+                    <span class="oj-ux-ico-plus btn-icon"></span>
+                  </span>
+                  Add Contact
+                </oj-button>
+
+              </div>
+            </div>
+          </template>
+
+
+        </oj-table>
+
+
+        <!-- <oj-button disabled="[[disabled]]" chroming='callToAction' on-oj-action="[[nextStep]]" style="float: right;">
+          NEXT
+          <span slot="endIcon">
+            <span slot='startIcon' class="oj-ux-ico-chevron-right oj-ux-icon-size-5x"></span>
+          </span>
+        </oj-button> -->
+
+      </oj-bind-if>
+      <!-- END STEP THREE: CONTACTS -->
+
+
+
+
+      <oj-bind-if test="[[selectedStepValue() === 'DOCUMENTS']]">
+        <!-- <oj-form-layout user-assistance-density='compact' class="oj-helper-margin-auto"> -->
+
+        <h5>Documents</h5>
+        <hr />
+
+        <oj-list-view id="listview" aria-label="Documents" data="{{document.provider}}" display="list"
+          scroll-policy-options.fetch-size="15" class="demo-list oj-sm-padding-1x-horizontal">
+          <template slot="itemTemplate" data-oj-as="item">
+            <li style="border: 2px dotted #ccc; margin-bottom: 10px;"
+              :class="[[{'document-not-uploaded': document.noAttachment == item.data.attachmentid,'document-uploaded': document.noAttachment != item.data.attachmentid,'document-optional': !item.data.required, }]]">
+              <oj-list-item-layout>
+                <div>
+                  <span slot="leading" style="font-size: 24px;">
+                    <a :id="[[item.data.attachmentid]]">
+                      <!-- data-bind="click: document.download" -->
+                      <oj-bind-text value="[[item.data.accdocumentname]]">
+                      </oj-bind-text>
+                    </a>
+                  </span>
+                </div>
+
+                <div slot="secondary">
+                  <span class="oj-text-color-secondary" style="font-size: 14px;">
+                    <oj-bind-text value="[[item.data.accdescription]]"></oj-bind-text>
+                  </span>
+                </div>
+                <oj-bind-if test="[[item.data.required]]">
+                  <span slot="tertiary" class="oj-typography-body-xs">
+                    <span class="oj-badge oj-badge-danger oj-sm-margin-2x-vertical">REQUIRED</span>
+                  </span>
+                </oj-bind-if>
+                <oj-bind-if test="[[document.noAttachment!=item.data.attachmentid]]">
+                  <span slot="tertiary" class="oj-typography-body-xs">
+                    <span class="oj-badge oj-badge-success oj-sm-margin-2x-vertical square-badge">UPLOADED</span>
+                  </span>
+                </oj-bind-if>
+                <oj-bind-if test="[[!item.data.required]]">
+                  <span slot="tertiary" class="oj-typography-body-xs">
+                    <span class="oj-badge oj-sm-margin-2x-vertical square-badge">OPTIONAL</span>
+                  </span>
+                </oj-bind-if>
+
+                <oj-bind-if test="[[item.data.istemplate]]">
+                  <span slot="tertiary" class="oj-typography-body-xs">
+                    <span class="oj-badge oj-sm-margin-2x-vertical square-badge oj-badge-subtle template-badge"
+                      :url="[[item.data.accdocumentannotationid]]" data-bind="click: document.downloadTemplate"> <span
+                        class="oj-ux-ico-attachment oj-ux-icon-size-5x mr-2"></span>TEMPLATE</span>
+                  </span>
+                </oj-bind-if>
+
+                <span slot="action">
+                  <!--  -->
+                  <!-- <oj-bind-if test="[[item.data.istemplate]]">
+                    <oj-button style="margin-right: 8px;" on-oj-action="[[document.downloadTemplate]]">
+                      <span slot="startIcon">
+                        <span class="oj-ux-ico-download"></span>
+                      </span>
+                      Download
+                    </oj-button>
+                  </oj-bind-if> -->
+
+                  <oj-file-picker selection-mode="single" :id="[[item.data.companydocumentid]]" select-on='click'
+                    on-oj-select='[[document.onDocumentSelect]]'>
+                    <oj-button slot="trigger">
+                      <span slot="startIcon">
+                        <span class="oj-ux-ico-upload"></span>
+                      </span>
+                      UPLOAD
+                    </oj-button>
+                  </oj-file-picker>
+
+                </span>
+              </oj-list-item-layout>
+            </li>
+          </template>
+        </oj-list-view>
+        
+      </oj-bind-if>
+
+    </oj-validation-group>
+
+    <oj-dialog drag-affordance="none" modality="modal" style="width:800px;height:auto;" initial-visibility="hide"
+      position='[[{my: "center", at: "center", collision: "fit"}]]' cancel-behavior="icon" id="ContactDialog"
+      dialog-title="Contact Information">
+      <div slot="body">
+        <!-- <oj-defer> -->
+        <oj-validation-group id="contact_tracker">
+          <hr />
+          <oj-form-layout direction="column" user-assistance-density='compact' max-rows="5" max-columns="2"
+            class="oj-formlayout-full-width">
+
+            <div>
+              <oj-input-text style="margin: 0 0 12px 0;" required="[[contact.fields.contacttype()=='1']]"
+                value="{{contact.fields.nmlsnumber}}" label-hint="NMLS Number" validators="[[[validator.number(1)]]]">
+              </oj-input-text>
+
+              <oj-input-text style="margin: 0 0 12px 0;" required value="{{contact.fields.firstname}}"
+                label-hint="First Name">
+              </oj-input-text>
+              <oj-input-text style="margin: 0 0 12px 0;" value="{{contact.fields.middlename}}" label-hint="Middle Name">
+              </oj-input-text>
+              <oj-input-text style="margin: 0 0 12px 0;" required value="{{contact.fields.lastname}}"
+                label-hint="Last Name">
+              </oj-input-text>
+
+              <oj-checkboxset value="{{contact.fields.isprimarycontact}}">
+                <oj-option value="true">Primary Contact</oj-option>
+              </oj-checkboxset>
+
+            </div>
+            <div>
+              <oj-input-text value="{{contact.fields.emailaddress}}" label-hint="Email"
+                validators="[[[validator.email]]]" disabled="[[contact.fields.isportaluser()]]">
+              </oj-input-text>
+              <oj-bind-if test="[[contact.fields.isportaluser()]]">
+                <span class="disabled-text">You cannot change email address of a portal user</span>
+              </oj-bind-if>
+            </div>
+            <oj-input-text value="{{contact.fields.telephone}}" label-hint="Telephone" length.max="15">
+            </oj-input-text>
+
+
+            <oj-select-single required label-hint="Job Title" data="[[LOV.providers.jobTitle]]"
+              value="{{contact.fields.contacttype}}" item-text="[[LOV.text.jobTitle]]">
+            </oj-select-single>
+
+            <oj-bind-if test="[[contact.fields.contacttype()=='3']]">
+              <oj-input-text value="{{contact.fields.jobtitleother}}" required="[[contact.fields.contacttype()=='3']]"
+                label-hint="Job Title Other">
+              </oj-input-text>
+            </oj-bind-if>
+
+          </oj-form-layout>
+
+        </oj-validation-group>
+        <!-- </oj-defer> -->
+      </div>
+      <div slot="footer">
+        <oj-button on-oj-action="[[contact.saveContact]]" chroming='callToAction'>
+          <span slot="startIcon">
+            <span class="oj-ux-ico-save btn-icon"></span>
+          </span>
+          SAVE
+        </oj-button>
+      </div>
+    </oj-dialog>
+
+    <div class="fixed-footer">
+      <oj-bind-if test="[[!applicationSubmitted()]]">
+
+        <oj-bind-if test="[[selectedStepValue() != 'INFORMATION']]">
+          <oj-button style="margin: 12px" chroming='callToAction' on-oj-action="[[previousStep]]" style="float: right;">
+            <span slot="startIcon">
+              <span slot='startIcon' class="oj-ux-ico-chevron-left oj-ux-icon-size-5x"></span>
+            </span>
+            PREVIOUS
+          </oj-button>
+        </oj-bind-if>
+
+        <oj-bind-if test="[[selectedStepValue() == 'COMPANY_INFO']]">
+          <oj-button style="margin: 12px;float: right;" disabled="[[disabled]]" chroming='callToAction'
+            on-oj-action="[[nextStep]]">
+            <span slot="startIcon">
+              <span class="oj-ux-ico-save btn-icon"></span>
+            </span>
+            SAVE & NEXT
+          </oj-button>
+        </oj-bind-if>
+
+
+        <oj-bind-if test="[[['INFORMATION','CONTACTS'].includes(selectedStepValue())]]">
+          <oj-button style="margin: 12px;float: right;" disabled="[[disabled]]" chroming='callToAction'
+            on-oj-action="[[nextStep]]">
+
+            <span slot="endIcon">
+              <span slot='startIcon' class="oj-ux-ico-chevron-right oj-ux-icon-size-5x"></span>
+            </span>
+            NEXT
+          </oj-button>
+        </oj-bind-if>
+
+
+        <oj-bind-if test="[[selectedStepValue() == 'DOCUMENTS']]">
+          <oj-button style="margin: 12px;float: right;" chroming='callToAction' on-oj-action="[[submitApplication]]"
+            style="float: right;">
+            SUBMIT APPLICATION
+            <span slot="endIcon">
+              <span slot='startIcon' class="oj-ux-ico-chevron-right oj-ux-icon-size-5x"></span>
+            </span>
+          </oj-button>
+        </oj-bind-if>
+
+      </oj-bind-if>
+
+    </div>
+  </div>
+
+</div>

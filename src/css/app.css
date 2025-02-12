@@ -1,0 +1,358 @@
+/*
+    Document   : override
+    Created on : <date>
+    Author     : <author>
+    Description:
+        This is where any of your application specific styles should be included
+*/
+
+html{
+  font-size: 14px;
+}
+
+input::-ms-reveal,
+input::-ms-clear {
+  display: none;
+}
+
+.sendOffScreen {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.appLogo {
+  height: 50px;
+  width: 200px;
+  background: url(./images/ACC-Logo.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.login-splash {
+  background: url(./images/loginSplash.png);
+  background-repeat: no-repeat;
+  background-size:cover;
+  height: 80vh;
+}
+
+.loader {
+  /* display: block; */
+  /*z-index: 20000;*/
+  position: absolute;
+  background: #fff;
+  height: -webkit-fill-available;
+  width: 100%;
+  opacity: 0.5;
+}
+
+/* TRAIN CSS START */
+oj-train{
+  display: contents;
+}
+
+.train-step-button{
+  margin: auto;
+  position: relative;
+}
+
+.back{
+  z-index: 100;
+  left: 55px;
+}
+
+.oj-ux-ico-chevron-left,.oj-ux-ico-chevron-right{
+  font-size: 35px;
+}
+.next{
+ left: -55px;
+}
+
+/* TRAIN CSS END */
+
+.btn-icon{
+  font-size: 18px;
+}
+
+.flex{
+  display: flex;
+}
+
+.w-100{
+  width: 100%;
+}
+
+.mw-200{
+  width: 200px;
+  min-width: 200px;
+}
+
+.vh-100{
+  min-height: 88vh;
+  height: -webkit-fill-available;
+}
+
+.p-0{
+  padding: 0px;
+}
+
+.shitty-toolbar{
+  padding-left: 0px !important;
+  height: 50px;
+  background: #2f599d;
+}
+
+h5{
+  font-size: 1.4rem;
+  color: #68a543;
+  text-transform: uppercase;
+  font-weight: normal;
+  margin: 5px;
+}
+
+hr{
+background: #2f599d;
+/* height: .5px; */
+margin-bottom: 10px;
+}
+
+.text-white{
+  color: white !important;
+  font-weight: normal;
+}
+
+#navDrawer{
+  background: rgba(22, 21, 19, 0.06);
+  border-right: 1px solid #ccc;
+}
+
+.oj-navigationlist-vertical .oj-navigationlist-item.oj-selected{
+  background-color: #FBF9F8;
+}
+
+.bullet-list ul{
+  list-style: none;
+}
+.bullet-list ul > li::before{
+  content: "\2022";
+  font-size: 20px;
+  margin: 5px;
+  color: #68a543;
+}
+h4{
+  font-weight: normal;
+}
+
+
+
+.document-uploaded{
+  border-left: 5px solid #68a543 !important;
+}
+
+.document-not-uploaded{
+  border-left: 5px solid #d63b25 !important;
+}
+
+
+.document-optional{
+  border-left: 5px solid #ccc !important;
+}
+
+.oj-listitemlayout-action {
+  padding: 0;
+  display: flex;
+  height: 100%;
+  margin-top: 20px;
+}
+
+.oj-text-field.oj-disabled .oj-text-field-input {
+  color: rgba(22, 21, 19, .7);
+  opacity: 1;
+}
+/*-------------------------PROGRESS---------------------------*/
+.label {
+  font-size: 22px;
+  padding: 10px;
+  margin-top:30px;
+}
+
+.center {
+  display: flex;
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.78);
+  z-index: 2000;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.progressbar {
+  margin: auto;
+  height: 6px;
+  width: 200px;
+  background: #000;
+  padding: 2px;
+  border-radius: 2px;
+}
+.progressbar > div {
+  height: 100%;
+  width: 0%;
+  background: white;
+  animation-name: loading;
+  animation-duration: 5s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes loading {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+.spinner {
+  width: 4rem;
+  height: 4rem;
+}
+.spinner.spinner1 {
+  border: 3px solid rgba(255, 255, 255, 0.25);
+  border-top-color: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  animation: rotation 0.8s ease infinite;
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes flip {
+  0% {
+    transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+  }
+  50% {
+    transform: perspective(120px) rotateX(-180deg) rotateY(0deg);
+  }
+  100% {
+    transform: perspective(120px) rotateX(-180deg) rotateY(-180deg);
+  }
+}
+@keyframes progress {
+  0% {
+    left: -130%;
+    background: rgba(0, 0, 0, 0.5);
+  }
+  50% {
+    left: 130%;
+    background: rgba(0, 0, 0, 0.5);
+  }
+  51% {
+    background: rgba(255, 255, 255, 0.5);
+  }
+  100% {
+    background: rgba(255, 255, 255, 0.5);
+  }
+}
+/*------------------------------------------------------------*/
+
+.attachment-wrapper {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  padding: 5px;
+  border-radius: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  font-weight: 500;
+  border: 1px solid #ccc;
+}
+.attachment-wrapper:hover {
+  background: #e5e5e5;
+}
+
+.ml-2 {
+  margin-left: 0.25rem;
+}
+.mr-2 {
+  margin-right: 0.25rem;
+}
+
+.template-badge{
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: bottom;
+}
+
+
+/* .fixed-footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: red;
+} */
+
+.fixed-footer
+{
+  border-left: 1px solid #ccc;
+  border-top:1px solid #ccc;
+    background-color:#f2efee;
+    z-index: 99;
+    position:fixed;
+    bottom:0px;
+    left:200px;
+    right:0px;
+    height:60px;
+    margin-bottom:0px;
+    width: auto
+}
+
+.green{
+  color: #68a543;
+}
+
+.bold-label * span{
+  font-size: 14px;
+  /* font-weight: normal; */
+  color: black;
+}
+
+.disabled-text {
+  font-size: 12px;
+  color: #777;
+}
+
+.disabled{
+  pointer-events:none;
+  opacity:0.7;
+}
+
+ul.oj-train-step-list .oj-selected {
+  font-weight: 700;
+  font-style: inherit;
+  text-decoration: revert;
+}

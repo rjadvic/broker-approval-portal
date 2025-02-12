@@ -1,0 +1,40 @@
+<div class="oj-hybrid-padding">
+  <div>
+
+    <h5>Resources</h5>
+    <hr />
+
+    <oj-list-view id="listview" aria-label="Resources" data="{{resource.provider}}" display="list"
+      scroll-policy-options.fetch-size="15" class="demo-list oj-sm-padding-1x-horizontal">
+      <template slot="itemTemplate" data-oj-as="item">
+        <li style="border: 2px dotted #ccc; margin-bottom: 10px;">
+          <oj-list-item-layout>
+            <div>
+              <span :id="[[item.data.id]]" :url="[[item.data.templateurl]]" slot="leading"
+                data-bind="click: resource.downloadTemplate" style="font-size: 24px;">
+                <a href="#">
+                  <oj-bind-text value="[[item.data.name]]">
+                  </oj-bind-text>
+                </a>
+              </span>
+            </div>
+
+            <div slot="secondary">
+              <span class="oj-text-color-secondary" style="font-size: 14px;">
+                <oj-bind-text value="[[item.data.description]]"></oj-bind-text>
+              </span>
+            </div>
+
+            <!-- <span slot="tertiary" class="oj-typography-body-xs">
+              <span class="oj-badge oj-sm-margin-2x-vertical square-badge oj-badge-subtle template-badge"
+                :url="[[item.data.templateurl]]" data-bind="click: resource.downloadTemplate"> <span
+                  class="oj-ux-ico-attachment oj-ux-icon-size-5x mr-2"></span>TEMPLATE</span>
+            </span> -->
+
+          </oj-list-item-layout>
+        </li>
+      </template>
+    </oj-list-view>
+
+  </div>
+</div>

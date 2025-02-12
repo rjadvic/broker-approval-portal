@@ -1,0 +1,92 @@
+<!--
+ Copyright (c) 2014, 2020, Oracle and/or its affiliates.
+ Licensed under The Universal Permissive License (UPL), Version 1.0
+ as shown at https://oss.oracle.com/licenses/upl/
+ -->
+<div class="oj-hybrid-padding">
+  <div>
+
+    <h5>Documents</h5>
+    <hr />
+
+    <oj-list-view id="listview" aria-label="Documents" data="{{document.provider}}" display="list"
+      scroll-policy-options.fetch-size="15" class="demo-list oj-sm-padding-1x-horizontal">
+      <template slot="itemTemplate" data-oj-as="item">
+        <li style="border: 2px dotted #ccc; margin-bottom: 10px;"
+          :class="[[{'document-not-uploaded': document.noAttachment == item.data.attachmentid,'document-uploaded': document.noAttachment != item.data.attachmentid,'document-optional': !item.data.required, }]]">
+          <oj-list-item-layout>
+            <div>
+              <span slot="leading" style="font-size: 24px;">
+                <a :id="[[item.data.attachmentid]]"> <!-- data-bind="click: document.download" -->
+                  <oj-bind-text value="[[item.data.accdocumentname]]">
+                  </oj-bind-text>
+                </a>
+              </span>
+            </div>
+
+            <div slot="secondary">
+              <span class="oj-text-color-secondary" style="font-size: 14px;">
+                <oj-bind-text value="[[item.data.accdescription]]"></oj-bind-text>
+              </span>
+            </div>
+            <oj-bind-if test="[[item.data.required]]">
+              <span slot="tertiary" class="oj-typography-body-xs">
+                <span class="oj-badge oj-badge-danger oj-sm-margin-2x-vertical">REQUIRED</span>
+              </span>
+            </oj-bind-if>
+            <oj-bind-if test="[[document.noAttachment!=item.data.attachmentid]]">
+              <span slot="tertiary" class="oj-typography-body-xs">
+                <span class="oj-badge oj-badge-success oj-sm-margin-2x-vertical square-badge">UPLOADED</span>
+              </span>
+            </oj-bind-if>
+            <oj-bind-if test="[[!item.data.required]]">
+              <span slot="tertiary" class="oj-typography-body-xs">
+                <span class="oj-badge oj-sm-margin-2x-vertical square-badge">OPTIONAL</span>
+              </span>
+            </oj-bind-if>
+
+            <oj-bind-if test="[[item.data.istemplate]]">
+              <span slot="tertiary" class="oj-typography-body-xs">
+                <!-- <span class="">
+                  <div class="attachment-wrapper" :url="[[item.data.templateurl]]"
+                    data-bind="click: document.downloadTemplate">
+                    <span class="oj-ux-ico-attachment oj-ux-icon-size-5x mr-2"></span>
+                    TEMPLATE
+                  </div>
+                </span> -->
+
+                <span class="oj-badge oj-sm-margin-2x-vertical square-badge oj-badge-subtle template-badge"
+                  :url="[[item.data.accdocumentannotationid]]" data-bind="click: document.downloadTemplate" > <span
+                    class="oj-ux-ico-attachment oj-ux-icon-size-5x mr-2"></span>TEMPLATE</span>
+              </span>
+            </oj-bind-if>
+
+            <span slot="action">
+              <!--  -->
+              <!-- <oj-bind-if test="[[item.data.istemplate]]">
+                <oj-button style="margin-right: 8px;" on-oj-action="[[document.downloadTemplate]]">
+                  <span slot="startIcon">
+                    <span class="oj-ux-ico-download"></span>
+                  </span>
+                  Download
+                </oj-button>
+              </oj-bind-if> -->
+
+              <oj-file-picker selection-mode="single" :id="[[item.data.companydocumentid]]" select-on='click'
+                on-oj-select='[[document.onDocumentSelect]]'>
+                <oj-button slot="trigger">
+                  <span slot="startIcon">
+                    <span class="oj-ux-ico-upload"></span>
+                  </span>
+                  Upload
+                </oj-button>
+              </oj-file-picker>
+
+            </span>
+          </oj-list-item-layout>
+        </li>
+      </template>
+    </oj-list-view>
+
+  </div>
+</div>

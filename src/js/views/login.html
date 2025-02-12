@@ -1,0 +1,47 @@
+<div class="" style="height: 100%;">
+
+  <div class="oj-flex oj-flex-items-pad" style="height: 100%;">
+    <!-- 1 -->
+    <div class="oj-lg-8 oj-mg-6 oj-flex-item oj-sm-only-hide oj-md-only-hide" style="background: url(https://accmortgage.blob.core.windows.net/acc/new-login-image-acc-broker.png);background-size: cover;background-position: center;">
+<!--       <img src="css/images/loginSplash.png" style="width: 100%; margin: -10px; margin-left: -13px" /> -->
+      <!--<img src="https://accmortgage.blob.core.windows.net/acc/new-login-image-acc-broker.png" style="width: 100%; margin: -10px; margin-left: -13px;min-height: 89vh;" /> -->
+    </div>
+
+    <!-- 2 -->
+    <div class="oj-sm-align-self-center oj-lg-4 oj-md-12 oj-flex-item oj-sm-padding-4x-horizontal">
+      <div class="text-center">
+        <img class="oj-sm-only-hide" src="css/images/ACC_Mortgage_Logo.png" width="200px" />
+      </div>
+      <br />
+      <br />
+      <br />
+      <oj-validation-group id="loginForm">
+        <oj-form-layout user-assistance-density='compact' class="oj-helper-margin-auto oj-formlayout-full-width"
+          max-columns='1'>
+          <h4 class="oj-sm-margin-0-vertical">Login</h4>
+          <oj-input-text required value="{{form.fields.email}}" label-hint="Email">
+          </oj-input-text>
+          <oj-input-password required value="{{form.fields.password}}" label-hint="Password">
+          </oj-input-password>
+          <div style="position: relative;">
+            <div style="float: left">
+              <oj-checkboxset>
+                <oj-option value="{{form.fields.rememberme}}">Remember me</oj-option>
+              </oj-checkboxset>
+            </div>
+            <div style="float: right;padding: 4px;">
+              <a href="#" data-bind="click: resetPassword" >Forgot Password?</a>
+            </div>
+          </div>
+          
+          <oj-button style="min-width: 100%" chroming="callToAction" on-oj-action="[[form.submit]]">Sign-in</oj-button>
+          <div>
+            <span>New to ACC? <a data-bind="click: register">Create an Account</a></span>
+          </div>
+        </oj-form-layout>
+      </oj-validation-group>
+
+    </div>
+  </div>
+
+</div>

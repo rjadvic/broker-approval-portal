@@ -1,0 +1,65 @@
+<div class="oj-hybrid-padding">
+
+  <div>
+    <oj-validation-group id="profile">
+      <oj-form-layout user-assistance-density='compact' max-columns="[[1]]">
+        <h5>Profile Information</h5>
+        <hr />
+
+        <oj-input-text style="min-width: 15em;" id="fname" label-hint="First Name" value="{{profile.firstname}}"
+          required>
+        </oj-input-text>
+
+        <oj-input-text style="min-width: 15em;" id="lname" label-hint="Last Name" value="{{profile.lastname}}" required>
+        </oj-input-text>
+
+        <oj-input-text style="min-width: 15em;" autocomplete="off" id="email" label-hint="Email"
+          value="{{profile.emailaddress}}" readonly>
+        </oj-input-text>
+
+        <div class="oj-flex oj-sm-flex-items-initial oj-sm-justify-content-flex-end">
+          <div class="oj-flex-item oj-sm-padding-2x-horizontal">
+            <oj-button chroming='callToAction' on-oj-action="[[updateProfile]]">
+              <span slot="startIcon">
+                <span class="oj-ux-ico-save btn-icon"></span>
+              </span>
+              Save
+            </oj-button>
+          </div>
+        </div>
+
+      </oj-form-layout>
+    </oj-validation-group>
+  </div>
+
+
+  <div>
+    <oj-validation-group id="password">
+      <oj-form-layout user-assistance-density='compact' max-columns="[[1]]"> <!-- class="oj-formlayout-full-width"-->
+        <h5> Change password</h5>
+        <hr />
+        <oj-input-password style="min-width: 15em;" type="password" value="{{form.oldpassword}}" required
+          validators="[[[validators.required(8)]]]" label-hint="Old Password">
+        </oj-input-password>
+        <oj-input-password style="min-width: 15em;" id="pass" type="password" value="{{form.password}}" required
+          validators="[[[validators.required(8)]]]" label-hint="Password">
+        </oj-input-password>
+        <oj-input-password style="min-width: 15em;" id="confirmPassword" type="password" value="{{confirmPassword}}"
+          required validators="[[[equalToPassword]]]" label-hint="Confirm Password">
+        </oj-input-password>
+
+        <div class="oj-flex oj-sm-flex-items-initial oj-sm-justify-content-flex-end">
+          <div class="oj-flex-item oj-sm-padding-2x-horizontal">
+            <oj-button chroming='callToAction' on-oj-action="[[changePassword]]">
+              <span slot="startIcon">
+                <span class="oj-ux-ico-save btn-icon"></span>
+              </span>
+              Update Password
+            </oj-button>
+          </div>
+        </div>
+      </oj-form-layout>
+    </oj-validation-group>
+  </div>
+</div>
+</div>
